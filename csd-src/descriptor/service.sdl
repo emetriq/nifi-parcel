@@ -556,14 +556,6 @@
                     "value": ""
                 },
                 {
-                    "key": "nifi.web.https.host",
-                    "value": ""
-                },
-                {
-                    "key": "nifi.web.https.port",
-                    "value": ""
-                },
-                {
                     "key": "nifi.web.https.network.interface.default",
                     "value": ""
                 },
