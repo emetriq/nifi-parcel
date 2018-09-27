@@ -230,6 +230,29 @@
         "type": "boolean",
         "value": "false"
     },
+    {
+        "name": "nifi.authorizer.configuration.file",
+        "label": "authorizer configuration file with path",
+        "description": "Specifies the configuration file where authorizers are defined. By default, the 'authorizers.xml' file located in the root installation conf directory is selected.",
+        "type": "path",
+        "pathType": "localDataFile",
+        "mode": "0600",
+        "default": "/var/lib/nifi/authorizers.xml"
+    },
+    {
+        "name": "nifi.cluster.protocol.is.secure",
+        "label": "nifi to nifi secure",
+        "description": "TODO",
+        "type": "boolean",
+        "value": "false"
+    },
+    {
+        "name": "nifi.remote.input.secure",
+        "label": "nifi cluster to nificluster  secure",
+        "description": "This indicates whether communication between this instance of NiFi and remote NiFi instances should be secure. By default, it is set to false. In order for secure site-to-site to work, set the property to true. Many other Security Properties (below) must also be configured.",
+        "type": "boolean",
+        "value": "false"
+    },
 
     {
       "name": "num.partitions",
@@ -528,10 +551,6 @@
                     "value": ""
                 },
                 {
-                    "key": "nifi.remote.input.secure",
-                    "value": "false"
-                },
-                {
                     "key": "nifi.remote.input.socket.port",
                     "value": ""
                 },
@@ -658,10 +677,6 @@
                 {
                     "key": "nifi.cluster.protocol.heartbeat.interval",
                     "value": "5 sec"
-                },
-                {
-                    "key": "nifi.cluster.protocol.is.secure",
-                    "value": "false"
                 },
                 {
                     "key": "nifi.cluster.node.address",
