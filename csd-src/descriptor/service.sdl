@@ -263,6 +263,16 @@
       "min": 1,
       "max": 2147483647,
       "softMax": 1000
+    },
+    {
+      "name": "nifi.cluster.flow.election.max.candidates",
+      "label": "nifi.cluster.flow.election.max.candidates",
+      "description": "TODO nifi.cluster.flow.election.max.candidates",
+      "type": "long",
+      "default": 3,
+      "min": 1,
+      "max": 1000,
+      "softMax": 3
     }
     
     
@@ -717,10 +727,6 @@
                 {
                     "key": "nifi.cluster.flow.election.max.wait.time",
                     "value": "5 mins"
-                },
-                {
-                    "key": "nifi.cluster.flow.election.max.candidates",
-                    "value": ""
                 },
                 {
                     "key" : "#nifi.zookeeper.connect.string",
