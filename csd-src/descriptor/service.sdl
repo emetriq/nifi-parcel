@@ -240,6 +240,21 @@
         "default": "/var/lib/nifi/authorizers.xml"
     },
     {
+      "name": "nifi.security.user.login.identity.provider",
+      "label": "login identity provider",
+      "description": "This indicates what type of login identity provider to use. The default value is blank, can be set to the identifier from a provider in the file specified in nifi.login.identity.provider.configuration.file. Setting this property will trigger NiFi to support username/password authentication.",
+      "type": "string",
+      "default": ""
+    },
+    {
+      "name": "nifi.login.identity.provider.configuration.file",
+      "label": "login identity provider file",
+      "description": "This is the location of the file that specifies how username/password authentication is performed. This file is only considered if nifi.security.user.login.identity.provider is configured with a provider identifier. The default value is ./conf/login-identity-providers.xml.",
+      "type": "string",
+      "default": "/var/lib/nifi/login-identity-providers.xml"
+    },
+
+    {
         "name": "nifi.cluster.protocol.is.secure",
         "label": "nifi to nifi secure",
         "description": "TODO",
@@ -631,10 +646,6 @@
                 {
                     "key": "nifi.security.user.authorizer",
                     "value": "managed-authorizer"
-                },
-                {
-                    "key": "nifi.security.user.login.identity.provider",
-                    "value": ""
                 },
                 {
                     "key": "nifi.security.ocsp.responder.url",
