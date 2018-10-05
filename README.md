@@ -8,7 +8,9 @@ This repository provides a parcel(https://github.com/cloudera/cm_ext) to install
 1. Create parcel
 2. Publish parcel
 3. Publish CSD
-
+4. Howtos
+  - [Setup SSL](/howtos/ssl/)
+  - [Enable Ldap (Active Directory)](/howtos/ads-ldap/)
 # Install Steps
 0. Install Prerequisites: `cloudera/cm_ext`
 ```sh
