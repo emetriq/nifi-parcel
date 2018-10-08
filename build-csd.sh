@@ -25,7 +25,7 @@ fi
 # Make directory
 mkdir $BUILD_DIR
 cd $SRC_DIR
-jar -cvf NIFI-1.0.jar *
+jar -cvf NIFI-1.2.jar *
 cd ..
-mv $SRC_DIR/NIFI-1.0.jar $BUILD_DIR/.
+mv $SRC_DIR/NIFI-1.2.jar $BUILD_DIR/.
 

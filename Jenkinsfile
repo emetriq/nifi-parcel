@@ -41,7 +41,7 @@ pipeline {
         stage('Build CSD') {
             steps {
                 sh "mkdir -p build-csd"
-                sh "cd csd-src && jar -cvf ../build-csd/NIFI-1.1.jar *"
+                sh "cd csd-src && jar -cvf ../build-csd/NIFI-1.2.jar *"
             }
         }//end stage check dirs
 
