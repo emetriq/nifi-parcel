@@ -35,7 +35,9 @@
       "name": "nifi.flow.configuration.file",
       "label": "flow configuration xml",
       "description": "The location of the flow configuration file (i.e., the file that contains what is currently displayed on the NiFi graph)",
-      "type": "string",
+      "type": "path",
+      "pathType": "localDataFile",
+      "mode": "0640",
       "default": "/var/lib/nifi/flow.xml.gz"
     },
     {
@@ -49,7 +51,9 @@
       "name": "nifi.flow.configuration.archive.dir",
       "label": "flow configuration archive",
       "description": "The location of the archive directory where backup copies of the flow.xml are saved.",
-      "type": "string",
+      "type": "path",
+      "pathType": "localDataDir",
+      "mode": "0750",
       "default": "/var/lib/nifi/archive/"
     },
     {
@@ -121,7 +125,9 @@
       "name": "nifi.nar.working.directory",
       "label": "nar work directory",
       "description": "The location of the nar working directory.",
-      "type": "string",
+      "type": "path",
+      "pathType": "localDataDir",
+      "mode": "0755",
       "default": "/var/lib/nifi/work/nar/"
     },
     {
@@ -139,6 +145,13 @@
       "default": "{{FQDN}}"
     },
     {
+      "name": "nifi.web.https.host",
+      "label": "web hostname",
+      "description": "The HTTP host. By default this is the placeholder {{FQDN}}, which get's set to hostname.domain",
+      "type": "string",
+      "default": "{{FQDN}}"
+    },
+    {
       "name": "nifi.web.http.port",
       "label": "web http port",
       "description": "The HTTP port. The default value is 8080.",
@@ -146,20 +159,115 @@
       "default": "8080"
     },
     {
-      "name": "nifi.web.https.host",
-      "label": "web hostname",
-      "description": "The HTTP host. By default this is empty",
+      "name": "nifi.web.https.port",
+      "label": "web https port, choose between http and https",
+      "description": "The HTTP port. The default value is empty.",
+      "type": "port",
+      "default": ""
+    },
+    {
+        "name": "nifi.security.keystore",
+        "label": "keystore file with path",
+        "description": "Filename of the Keystore that contains the server’s private key.",
+        "type": "path",
+        "pathType": "localDataFile",
+        "mode": "0600",
+        "default": "/var/lib/nifi/server_keystore.jks"
+    },
+    {
+        "name": "nifi.security.keystoreType",
+        "label": "keystore type",
+        "description": "The type of the Keystore. Must be either PKCS12 or JKS. JKS is the preferred type, PKCS12 files will be loaded with BouncyCastle provider.",
+        "type": "string_enum",
+        "validValues": ["JKS","PKCS12"],
+        "default": "JKS"
+    },
+    {
+        "name": "nifi.security.keystorePasswd",
+        "label": "Keystore password",
+        "description": "The password for the Keystore.",
+        "type": "password",
+        "sensitive": "true",
+        "default": ""
+    },
+    {
+        "name": "nifi.security.keyPasswd",
+        "label": "private key password",
+        "description": "The password for the certificate in the Keystore. If not set, the value of nifi.security.keystorePasswd will be used.",
+        "type": "password",
+        "sensitive": "true",
+        "default": ""
+    },
+    {
+        "name": "nifi.security.truststore",
+        "label": "truststore file with path",
+        "description": "Filename of the Truststore that will be used to authorize those connecting to NiFi. A secured instance with no Truststore will refuse all incoming connections.",
+        "type": "path",
+        "pathType": "localDataFile",
+        "mode": "0600",
+        "default": "/var/lib/nifi/server_truststore.jks"
+    },
+    {
+        "name": "nifi.security.truststoreType",
+        "label": "truststore type",
+        "description": "The type of the Truststore. Must be either PKCS12 or JKS. JKS is the preferred type, PKCS12 files will be loaded with BouncyCastle provider.",
+        "type": "string_enum",
+        "validValues": ["JKS","PKCS12"],
+        "default": "JKS"
+    },
+    {
+        "name": "nifi.security.truststorePasswd",
+        "label": "Truststore password",
+        "description": "The truststore password",
+        "type": "password",
+        "sensitive": "true",
+        "default": ""
+    },
+    {
+        "name": "nifi.security.needClientAuth",
+        "label": "need client auth",
+        "description": "nifi.security.needClientAuth",
+        "type": "boolean",
+        "value": "false"
+    },
+    {
+        "name": "nifi.authorizer.configuration.file",
+        "label": "authorizer configuration file with path",
+        "description": "Specifies the configuration file where authorizers are defined. By default, the 'authorizers.xml' file located in the root installation conf directory is selected.",
+        "type": "path",
+        "pathType": "localDataFile",
+        "mode": "0600",
+        "default": "/var/lib/nifi/authorizers.xml"
+    },
+    {
+      "name": "nifi.security.user.login.identity.provider",
+      "label": "login identity provider",
+      "description": "This indicates what type of login identity provider to use. The default value is blank, can be set to the identifier from a provider in the file specified in nifi.login.identity.provider.configuration.file. Setting this property will trigger NiFi to support username/password authentication.",
       "type": "string",
       "default": ""
     },
     {
-      "name": "nifi.web.https.port",
-      "label": "web http port",
-      "description": "The HTTP port. The default value is 8080.",
-      "type": "port",
-      "default": ""
+      "name": "nifi.login.identity.provider.configuration.file",
+      "label": "login identity provider file",
+      "description": "This is the location of the file that specifies how username/password authentication is performed. This file is only considered if nifi.security.user.login.identity.provider is configured with a provider identifier. The default value is ./conf/login-identity-providers.xml.",
+      "type": "string",
+      "default": "/var/lib/nifi/login-identity-providers.xml"
     },
 
+    {
+        "name": "nifi.cluster.protocol.is.secure",
+        "label": "nifi to nifi secure",
+        "description": "TODO",
+        "type": "boolean",
+        "value": "false"
+    },
+    {
+        "name": "nifi.remote.input.secure",
+        "label": "nifi cluster to nificluster  secure",
+        "description": "This indicates whether communication between this instance of NiFi and remote NiFi instances should be secure. By default, it is set to false. In order for secure site-to-site to work, set the property to true. Many other Security Properties (below) must also be configured.",
+        "type": "boolean",
+        "value": "false"
+    },
 
     {
       "name": "num.partitions",
@@ -170,8 +278,17 @@
       "min": 1,
       "max": 2147483647,
       "softMax": 1000
+    },
+    {
+      "name": "nifi.cluster.flow.election.max.candidates",
+      "label": "nifi.cluster.flow.election.max.candidates",
+      "description": "TODO nifi.cluster.flow.election.max.candidates",
+      "type": "long",
+      "default": 3,
+      "min": 1,
+      "max": 1000,
+      "softMax": 3
     }
-    
     
     
     
@@ -459,10 +576,6 @@
                     "value": ""
                 },
                 {
-                    "key": "nifi.remote.input.secure",
-                    "value": "false"
-                },
-                {
                     "key": "nifi.remote.input.socket.port",
                     "value": ""
                 },
@@ -484,14 +597,6 @@
                 },
                 {
                     "key": "nifi.web.http.network.interface.default",
-                    "value": ""
-                },
-                {
-                    "key": "nifi.web.https.host",
-                    "value": ""
-                },
-                {
-                    "key": "nifi.web.https.port",
                     "value": ""
                 },
                 {
@@ -539,44 +644,8 @@
                     "value": ""
                 },
                 {
-                    "key": "nifi.security.keystore",
-                    "value": ""
-                },
-                {
-                    "key": "nifi.security.keystoreType",
-                    "value": ""
-                },
-                {
-                    "key": "nifi.security.keystorePasswd",
-                    "value": ""
-                },
-                {
-                    "key": "nifi.security.keyPasswd",
-                    "value": ""
-                },
-                {
-                    "key": "nifi.security.truststore",
-                    "value": ""
-                },
-                {
-                    "key": "nifi.security.truststoreType",
-                    "value": ""
-                },
-                {
-                    "key": "nifi.security.truststorePasswd",
-                    "value": ""
-                },
-                {
-                    "key": "nifi.security.needClientAuth",
-                    "value": ""
-                },
-                {
                     "key": "nifi.security.user.authorizer",
                     "value": "managed-authorizer"
-                },
-                {
-                    "key": "nifi.security.user.login.identity.provider",
-                    "value": ""
                 },
                 {
                     "key": "nifi.security.ocsp.responder.url",
@@ -631,10 +700,6 @@
                     "value": "5 sec"
                 },
                 {
-                    "key": "nifi.cluster.protocol.is.secure",
-                    "value": "false"
-                },
-                {
                     "key": "nifi.cluster.node.address",
                     "value": "{{FQDN}}"
                 },
@@ -673,10 +738,6 @@
                 {
                     "key": "nifi.cluster.flow.election.max.wait.time",
                     "value": "5 mins"
-                },
-                {
-                    "key": "nifi.cluster.flow.election.max.candidates",
-                    "value": ""
                 },
                 {
                     "key" : "#nifi.zookeeper.connect.string",

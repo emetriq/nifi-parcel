@@ -1,0 +1,27 @@
+--- /etc/ssl/openssl.cnf        2015-06-11 15:32:37.000000000 +0000
++++ CA/openssl.cnf      2018-10-04 11:38:49.038325516 +0000
+@@ -39,7 +39,7 @@
+ ####################################################################
+ [ CA_default ]
+ 
+-dir            = ./demoCA              # Where everything is kept
++dir            = ./CA          # Where everything is kept
+ certs          = $dir/certs            # Where the issued certs are kept
+ crl_dir                = $dir/crl              # Where the issued crl are kept
+ database       = $dir/index.txt        # database index file.
+@@ -122,7 +122,7 @@
+ # WARNING: ancient versions of Netscape crash on BMPStrings or UTF8Strings.
+ string_mask = utf8only
+ 
+-# req_extensions = v3_req # The extensions to add to a certificate request
++req_extensions = v3_req # The extensions to add to a certificate request
+ 
+ [ req_distinguished_name ]
+ countryName                    = Country Name (2 letter code)
+@@ -220,6 +220,8 @@
+ 
+ basicConstraints = CA:FALSE
+ keyUsage = nonRepudiation, digitalSignature, keyEncipherment
++subjectAltName = ${ENV::SAN}
+ 
+ [ v3_ca ]
