@@ -3,74 +3,49 @@ NiFi Parcel
 
 This repository provides a parcel(https://github.com/cloudera/cm_ext) to install Apache NiFi as a service usable by Cloudera Manager.
 
-# Overview
-0. `cloudera/cm_ext`
-1. Create parcel
-2. Publish parcel
-3. Publish CSD
-4. Howtos
+## Overview
+- Quick install
+  - [below one this page](#quick-install)
+- Build Parcel and CSD
+  - [Build all](/howtos/build-all/)
+- Howtos
   - [Setup SSL](/howtos/ssl/)
   - [Enable Ldap (Active Directory)](/howtos/ads-ldap/)
-# Install Steps
-0. Install Prerequisites: `cloudera/cm_ext`
-```sh
-cd /tmp
-git clone https://github.com/cloudera/cm_ext
-cd cm_ext/validator
-mvn install
-```
+- Todos, finished features
+  - [bottom of this page](#todos)
 
-1. Create parcel & CSD:
+### Quick install
+1. Download CSD [latest release](/emetriq/nifi-parcel/releases/latest)
 ```sh
-$ cd /tmp
-# First, create NiFi package
-$ git clone http://github.com/apache/nifi
-$ cd nifi
-$ mvn clean install
-$ cd /tmp
-$ git clone http://github.com/prateek/nifi-parcel
-$ cd nifi-parcel
-$ POINT_VERSION=5 VALIDATOR_DIR=/tmp/cm_ext ./build-parcel.sh /tmp/nifi/nifi-assembly/target/nifi-*-SNAPSHOT-bin.tar.gz
-$ VALIDATOR_DIR=/tmp/cm_ext ./build-csd.sh
-```
-
-2. Serve Parcel using Python
-```sh
-$ cd build-parcel
-$ python -m SimpleHTTPServer 14641
-# navigate to Cloudera Manager -> Parcels -> Edit Settings
-# Add fqdn:14641 to list of urls
-# install the NIFI parcel
-```
-
-4. Move CSD to Cloudera Manager's CSD Repo
-```sh
-# transfer build-csd/NIFI-1.0.jar to CM's host
-$ cp NIFI-1.0.jar /opt/cloudera/csd
-$ mkdir /opt/cloudera/csd/NIFI-1.0
-$ cp NIFI-1.0.jar /opt/cloudera/csd/NIFI-1.0
-$ cd /opt/cloudera/csd/NIFI-1.0
-$ jar xvf NIFI-1.0.jar
-$ rm -f NIFI-1.0.jar
+$ cp NIFI-1.2.jar /opt/cloudera/csd
 $ sudo service cloudera-scm-server restart
 # Wait a min, go to Cloudera Manager -> Add a Service -> NiFi
 ```
+2. Manually add a parcel download URL to cloudera CDH
 
-## Pending items
-- simplify install
-  - Provide precompiled CSD
-  - Provide parcel repo
-- Expose metrics from NiFi
-- Allow reading log files in CDH
-- https config
-  - certificate Management
-- Login
-  - this requires https
-- Fix *WebUI* link in CDH
-- Parcel building in Jenkins
-  - Use Nifi releases
+  - :exclamation: TODO: There is currently no public download for the Nifi parcel available, see [Build all](/howtos/build-all/)
+    ![CDH GUI - Parcel Config](Screenshot_20181008_182623.png)
 
-## Finished items
-- "Currently `NiFi` runs under the `root` user" - done. User is *nifi*.
-- Expose config options under Cloudera Manager - done.
+
+
+## Todos
+- [x] "Currently `NiFi` runs under the `root` user" 
+  - done. User is *nifi*.
+- [x] Expose config options under Cloudera Manager 
   - Conf folder from parcels is used, this needs to be migrated to ConfigWriter - done for all basic settings
+- [ ] simplify install
+  - [x] Provide precompiled CSD
+    - see [latest release](/emetriq/nifi-parcel/releases/latest)
+  - [ ] Provide parcel repo
+  - [ ] Include parcel repo URL in CSD
+- [ ] Expose metrics from NiFi in CDH
+- [ ] Allow reading log files in CDH
+- [x] https config
+  - [x] document certificate Management
+  - [ ] \(optional\) Puppet CA integration - blocked by https://tickets.puppetlabs.com/browse/SERVER-2338
+- [x] Login
+  - [x] this requires https
+- [ ] Fix *WebUI* link in CDH
+- [ ] Parcel building in Jenkins
+  - [ ] Use Nifi releases
+- [ ] multi distribution support for parcels
