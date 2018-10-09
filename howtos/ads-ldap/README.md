@@ -1,8 +1,13 @@
 # Enable Login
+:exclamation: You need to enable SSL *before* you can enable authorization
+
 Nifi differentiates strickly between authentication and authorization. This means you have to enable and configure ldap for *both*.` But you can use the *ldap bind user* and connection settings for both.
+There are two configuration files you need to prepare and place into `/var/lib/nifi` (default directory for this CSD):
+- [authorizers.xml](authorizers.xml)
+- [login-identity-providers.xml](login-identity-providers.xml)
 
 ## Create authentication config (identity provider)
-This is a Microsoft Active Directory compatible setup. 
+This is Microsoft Active Directory compatible setup is included in the `login-identity-providers.xml` provided above.
 - `{0}` is a placeholder for the login name
 - `&amp;` Some chars need to be escaped in XML for example the ampersand `&`
 ```xml
@@ -38,7 +43,10 @@ This is a Microsoft Active Directory compatible setup.
 ```
 
 ## Create authorization config
-This authorization config is similar to the config we already have from our SSL setup. We only need to add a ldap provider for our *group* and *user* list. You can also change the default
+This authorization config [authorizers.xml](authorizers.xml) is similar to the config we already have from our SSL setup. You can use the configuration you created in the SSL-Howto and change the sections below or start directly with the one provide here. 
+
+### LdapProvider for user and group lists
+We only need to add a ldap provider for our *group* and *user* list.
 ```xml
     <userGroupProvider>
         <identifier>ldap-user-group-provider</identifier>
@@ -76,10 +84,8 @@ After enabling ldap, we can choose our initial administrator from all users incl
     </accessPolicyProvider>
 ```
 
-The complete configuration can be found here:
-[authorizers.xml](authorizers.xml with ldap)
 
 # Nifi config
-To activate these changes we need to set the authentication provider in *nifi.properties* . Every change can easily be made in the Web-GUI:
+To activate these changes we need to set the authentication provider in *nifi.properties* . Every change can easily be made in the Web-GUI. This screenshot also includes the SSL changes made in the SSL Howto.
 ![CDH GUI - nifi.properties](Screenshot_20181005_113107.png)
 
