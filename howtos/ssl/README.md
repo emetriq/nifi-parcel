@@ -10,6 +10,9 @@ This CA can be created on *any system* that has openssl installed.
 ```bash
 mkdir CA
 mkdir CA/private
+mkdir CA/newcerts
+touch CA/index.txt
+echo "01" >CA/serial.txt
 cd CA
 openssl genrsa -aes256 -out private/cakey.pem 4096
 openssl req -new -x509 -key private/cakey.pem -out cacert.pem
@@ -136,9 +139,9 @@ SAN="DNS: node1.example.com" openssl ca -policy policy_anything -extensions v3_r
 SAN="DNS: node2.example.com" openssl ca -policy policy_anything -extensions v3_req -config CA/openssl.cnf -out node2.example.com.crt -infiles node2.example.com.csr
 SAN="DNS: node3.example.com" openssl ca -policy policy_anything -extensions v3_req -config CA/openssl.cnf -out node3.example.com.crt -infiles node3.example.com.csr
 
-scp CA/ca.crt node1.example.com.crt root@node1:
-scp CA/ca.crt node2.example.com.crt root@node2:
-scp CA/ca.crt node3.example.com.crt root@node3:
+scp CA/cacert.pem node1.example.com.crt root@node1:
+scp CA/cacert.pem node2.example.com.crt root@node2:
+scp CA/cacert.pem node3.example.com.crt root@node3:
 ```
 
 ## Import the certs
@@ -149,6 +152,9 @@ keytool -import -file cacert.pem -trustcacerts -alias cacert -keystore server_ke
 # Certificate was added to keystore
 keytool -import -file $(hostname -f).crt -alias $(hostname -f) -keystore server_keystore.jks -storepass changeme -noprompt
 # Certificate reply was installed in keystore
+
+# Copy the keystore
+cp server_keystore.jks /var/lib/nifi/server_keystore.jks
 ```
 
 # Authorization of the nifi nodes
@@ -156,7 +162,8 @@ We need to create an initial trust between each of the nodes. So we need to add 
 
 ## Example `/var/lib/nifi/authorizers.xml` file
 == must be consistent on each node running Nifi ==
-[authorizers-ssl-only.xml](authorizers.xml ssl only config)
+You can use this authorizers.xml [authorizers-ssl-only.xml](authorizers.xml ssl only config) provided here, if you only want SSL. 
+If you are going to add LDAP/ADS authentication use the one in the [ads ldap Howto](/howtos/ads-ldap/).
 ```xml
 <authorizers>
 
@@ -203,7 +210,7 @@ We need to create an initial trust between each of the nodes. So we need to add 
 ```
 
 ## (optional) Create admin cert
-If you are not enabling ldap, kerberos or similar you need a usercertificate to login. You can skip this, but you need to enable LDAP or kerberos to login.
+If you are *not enabling* ldap, kerberos or similar you need a usercertificate to login. If skip this, there is now way for you to login.
 ```bash
 openssl genrsa -out admin.key 2048
 openssl req -new -out admin.csr -key admin.key

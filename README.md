@@ -1,7 +1,18 @@
 NiFi Parcel
 ===========
 
-This repository provides a parcel(https://github.com/cloudera/cm_ext) to install Apache NiFi as a service usable by Cloudera Manager.
+This repository provides a parcel (https://github.com/cloudera/cm_ext) to install Apache NiFi as a service usable by Cloudera Manager.
+## Requirements
+- CDH >=5.5 (tested with 5.15)
+- HDFS
+- Zookeeper installed by CDH. The embedded Zookeeper is *not* supported
+
+The CSD provided here creates the following Items:
+- a (system) user on *each* node in your Hadoop cluster
+  - with `/var/lib/nifi` as home directory
+- data and configuration files below `/var/lib/nifi`. 
+  - Custom configuration files (SSL, login, etc.) should also be placed there
+  - It is posible to change most of those directories use the CDH GUI
 
 ## Overview
 - Quick install
