@@ -288,6 +288,15 @@
       "min": 1,
       "max": 1000,
       "softMax": 3
+    },
+    {
+        "name": "nifi.kerberos.krb5.file",
+        "label": "The location of the krb5 file",
+        "description": "The location of the krb5 file, if used. It is blank by default. At this time, only a single krb5 file is allowed to be specified per NiFi instance, so this property is configured here to support SPNEGO and service principals rather than in individual Processors.",
+        "type": "path",
+        "pathType": "localDataFile",
+        "mode": "0644",
+        "default": "/etc/krb5.conf"
     }
     
     
@@ -761,10 +770,6 @@
                 },
                 {
                     "key": "nifi.zookeeper.kerberos.removeRealmFromPrincipal",
-                    "value": ""
-                },
-                {
-                    "key": "nifi.kerberos.krb5.file",
                     "value": ""
                 },
                 {
