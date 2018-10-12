@@ -46,7 +46,7 @@
     <userGroupProvider>
         <identifier>file-user-group-provider</identifier>
         <class>org.apache.nifi.authorization.FileUserGroupProvider</class>
-        <property name="Users File">./conf/users.xml</property>
+        <property name="Users File">/var/lib/nifi/users.xml</property>
         <property name="Legacy Authorized Users File"></property>
 
         <!--        <property name="Initial User Identity 1">EMAILADDRESS=admins@example.com, CN=admin@example.com, OU=IT, O=example, L=Hamburg, ST=Hamburg, C=DE</property>-->
@@ -247,7 +247,7 @@
         <identifier>file-access-policy-provider</identifier>
         <class>org.apache.nifi.authorization.FileAccessPolicyProvider</class>
         <property name="User Group Provider">file-user-group-provider</property>
-        <property name="Authorizations File">./conf/authorizations.xml</property>
+        <property name="Authorizations File">/var/lib/nifi/authorizations.xml</property>
         <property name="Initial Admin Identity">EMAILADDRESS=admins@example.com, CN=admin@example.com, OU=IT, O=example, L=Hamburg, ST=Hamburg, C=DE</property>
         <property name="Initial Admin Identity">nifi-admin</property>
         <property name="Legacy Authorized Users File"></property>
