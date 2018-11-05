@@ -297,6 +297,20 @@
         "pathType": "localDataFile",
         "mode": "0644",
         "default": "/etc/krb5.conf"
+    },
+    {
+        "name": "nifi.web.proxy.host",
+        "label": "Allowed HTTP Host header values",
+        "description": "A comma separated list of allowed HTTP Host header values to consider when NiFi is running securely and will be receiving requests to a different host[:port] than it is bound to. For example, when running in a Docker container or behind a proxy (e.g. localhost:18443, proxyhost:443). By default, this value is blank meaning NiFi should only allow requests sent to the host[:port] that NiFi is bound to.",
+        "type": "string",
+        "default": ""
+    },
+    {
+        "name": "nifi.web.proxy.context.path",
+        "label": "Allowed HTTP X-ProxyContextPath headers",
+        "description": "A comma separated list of allowed HTTP X-ProxyContextPath or X-Forwarded-Context header values to consider. By default, this value is blank meaning all requests containing a proxy context path are rejected. Configuring this property would allow requests where the proxy path is contained in this listing.",
+        "type": "string",
+        "default": ""
     }
     
     
@@ -623,14 +637,6 @@
                 {
                     "key": "nifi.web.max.header.size",
                     "value": "16 KB"
-                },
-                {
-                    "key": "nifi.web.proxy.context.path",
-                    "value": ""
-                },
-                {
-                    "key": "nifi.web.proxy.host",
-                    "value": ""
                 },
                 {
                     "key": "nifi.sensitive.props.key",
